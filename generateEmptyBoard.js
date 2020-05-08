@@ -5,7 +5,7 @@
 const letterMapping = require('./constants');
 
 
-const generateEmptyBoard = (letterMapping) => {
+const generateEmptyBoard = () => {
   let emptyBoard = [];
   
   // generate first row of letters

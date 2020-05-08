@@ -1,36 +1,46 @@
+const { createDirectionCoords } = require('./constants');
+const { generateRandomCoord, generateRandomDirection } = require('./randomGenerators');
+
 // this function will generate the coordinates of all pieces of the enemy board
-const { letterMapping, directionMapping, createDirectionCoords } = require('./constants');
 
-const pieceCoords = [];
+const pieceCoords = {};
 
-// create a function that generates the first coord to be used for each piece
-const generateRandomCoord = letterMapping => {
-  const numCoord = Math.ceil(Math.random() * 10).toString();
-  const letterCoordNumber = Math.ceil(Math.random() * 10);
-  const letterCoord = letterMapping[letterCoordNumber.toString()];
-  return `${letterCoord}${numCoord}`;
-};
+const generatePiece = pieceLength => {
+  const firstCoord = generateRandomCoord();
 
-// create a function that generates the direction of the piece
-const generateRandomDirection = directionMapping => {
-  const directionNumber = Math.ceil(Math.random() * 4);
-  const direction = directionMapping[directionNumber.toString()];
-  return direction;
-};
+  let numCoord; // separate number coord for use in conditionals
+  firstCoord.length > 2 ? numCoord = Number(`${firstCoord[1]}${firstCoord[2]}`) : numCoord = Number(firstCoord[1]);
 
-const generatePiece = (letterMapping, directionMapping, pieceName, pieceLength) => {
-  const firstCoord = generateRandomCoord(letterMapping);
-  const direction = generateRandomDirection(directionMapping);
+  const direction = generateRandomDirection();
 
   // generate the rest of the coords, ensuring the piece doesn't go off the board
-  if ((direction === 'up' && firstCoord[1] >= 5) || (direction === 'down' && firstCoord[1] <= 6) || (direction === 'left' && firstCoord[0] >= 'E') || (direction === 'right' && firstCoord[0] <= 'F')) {
-    const coords = createDirectionCoords[direction](firstCoord, pieceLength - 1, letterMapping);
+  if ((direction === 'up' && numCoord >= 5) || (direction === 'down' && numCoord <= 6) || (direction === 'left' && firstCoord[0] >= 'E') || (direction === 'right' && firstCoord[0] <= 'F')) {
+    const coords = createDirectionCoords[direction](`${firstCoord[0]}${numCoord}`, pieceLength - 1);
 
-    pieceCoords[pieceName] = coords;
-    return pieceCoords;
+    // check that none of the coords are taken by a different piece
+    for (const coord of coords) {
+      for (const piece in pieceCoords) {
+        if (pieceCoords[piece].includes(coord)) {
+          return generatePiece(pieceLength);
+        }
+      }
+    }
+
+    return coords;
+
   } else { // if the configuration doesn't work, generate again
-    return generatePiece(letterMapping, directionMapping, pieceName, pieceLength);
+    return generatePiece(pieceLength);
   }
 };
 
-console.log(generatePiece(letterMapping, directionMapping, 'carrier', 5));
+const generatePieces = () => {
+  pieceCoords.carrier = generatePiece(5);
+  pieceCoords.battleship = generatePiece(4);
+  pieceCoords.cruiser = generatePiece(3);
+  pieceCoords.submarine = generatePiece(3);
+  pieceCoords.destroyer = generatePiece(2);
+};
+
+generatePieces();
+
+module.exports = generatePieces;
