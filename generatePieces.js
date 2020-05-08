@@ -1,11 +1,9 @@
 const { createDirectionCoords } = require('./constants');
 const { generateRandomCoord, generateRandomDirection } = require('./randomGenerators');
 
-// this function will generate the coordinates of all pieces of the enemy board
+// this function will generate the coordinates of all the pieces for the board
 
-const pieceCoords = {};
-
-const generatePiece = pieceLength => {
+const generatePiece = (pieceLength, boardPieces) => {
   const firstCoord = generateRandomCoord();
 
   let numCoord; // separate number coord for use in conditionals
@@ -19,9 +17,9 @@ const generatePiece = pieceLength => {
 
     // check that none of the coords are taken by a different piece
     for (const coord of coords) {
-      for (const piece in pieceCoords) {
-        if (pieceCoords[piece].includes(coord)) {
-          return generatePiece(pieceLength);
+      for (const piece in boardPieces) {
+        if (boardPieces[piece].includes(coord)) {
+          return generatePiece(pieceLength, boardPieces);
         }
       }
     }
@@ -29,18 +27,21 @@ const generatePiece = pieceLength => {
     return coords;
 
   } else { // if the configuration doesn't work, generate again
-    return generatePiece(pieceLength);
+    return generatePiece(pieceLength, boardPieces);
   }
 };
 
 const generatePieces = () => {
-  pieceCoords.carrier = generatePiece(5);
-  pieceCoords.battleship = generatePiece(4);
-  pieceCoords.cruiser = generatePiece(3);
-  pieceCoords.submarine = generatePiece(3);
-  pieceCoords.destroyer = generatePiece(2);
+  const boardPieces = {};
+
+  boardPieces.carrier = generatePiece(5, boardPieces);
+  boardPieces.battleship = generatePiece(4, boardPieces);
+  boardPieces.cruiser = generatePiece(3, boardPieces);
+  boardPieces.submarine = generatePiece(3, boardPieces);
+  boardPieces.destroyer = generatePiece(2, boardPieces);
+
+  return boardPieces;
 };
 
-generatePieces();
 
 module.exports = generatePieces;

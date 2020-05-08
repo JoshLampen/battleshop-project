@@ -1,5 +1,6 @@
-// these functions will help generate the opponent's board pieces
 const { letterMapping, directionMapping } = require('./constants');
+
+// these functions will help generate the opponent's board pieces
 
 // generates the first coord to be used for each piece
 const generateRandomCoord = () => {

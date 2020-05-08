@@ -53,7 +53,7 @@ const createDirectionCoords = {
     const coords = [firstCoord];
 
     let numCoord; // separate number coord
-    firstCoord.length > 2 ? numCoord = Number(`${firstCoord[1]}${firstCoord[2]}`) : numCoord = Number(firstCoord[1]);
+    firstCoord.length > 2 ? numCoord = `${firstCoord[1]}${firstCoord[2]}` : numCoord = firstCoord[1];
 
     // find key of letter coord
     let oldLetterKey;
@@ -77,7 +77,7 @@ const createDirectionCoords = {
     const coords = [firstCoord];
     
     let numCoord; // separate number coord
-    firstCoord.length > 2 ? numCoord = Number(`${firstCoord[1]}${firstCoord[2]}`) : numCoord = Number(firstCoord[1]);
+    firstCoord.length > 2 ? numCoord = `${firstCoord[1]}${firstCoord[2]}` : numCoord = firstCoord[1];
 
     // find key of letter coord
     let oldLetterKey;
