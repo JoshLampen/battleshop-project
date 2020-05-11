@@ -1,10 +1,10 @@
-const generateEmptyBoard = require('./generateEmptyBoard');
+const generateBoardArray = require('./generateBoardArray');
 const generatePieces = require('./generatePieces');
 
 // this function populates an empty board with the generated pieces, and converts the board from array to string
 
 const generateBoard = () => {
-  const board = generateEmptyBoard();
+  const emptyBoard = generateBoardArray();
   const pieces = generatePieces();
 
   // push the coords of all pieces into a single array
@@ -24,36 +24,39 @@ const generateBoard = () => {
     //find the index of the letter and number
     let letterIndex;
     let numIndex;
-    for (const letter of board[0]) {
+    for (const letter of emptyBoard[0]) {
       if (letterCoord === letter) {
-        letterIndex = board[0].indexOf(letter);
+        letterIndex = emptyBoard[0].indexOf(letter);
       }
     }
-    for (const row of board) {
+    for (const row of emptyBoard) {
       if (numCoord === Number(row[0])) {
-        numIndex = board.indexOf(row);
+        numIndex = emptyBoard.indexOf(row);
       }
     }
 
     // place coord into appropriate place, represented by a circle
     for (let i = 0; i <= 10; i++) {
       for (let j = 0; j <= 10; j++) {
-        board[numIndex][letterIndex] = 'O';
+        emptyBoard[numIndex][letterIndex] = 'O';
       }
     }
   }
 
   // turn the board into a string
-  const firstRow = ' ' + board[0].join(' | ') + ' |';
-  console.log(firstRow);
+  let board = '';
+  const firstRow = ' ' + emptyBoard[0].join(' | ') + ' |\n';
+  board += firstRow;
 
   for (let i = 1; i <= 10; i++) {
-    const row = board[i].join(' | ') + ' |';
-    console.log(row);
+    const row = emptyBoard[i].join(' | ') + ' |\n';
+    board += row;
   }
 
-  console.log(pieces);
-
+  return board;
 };
+
+console.log(generateBoard());
+
 
 module.exports = generateBoard;

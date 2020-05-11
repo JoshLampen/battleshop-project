@@ -4,7 +4,7 @@ const { letterMapping } = require('./constants');
 // when the coordinates of the board's pieces are generated, they will be mapped to the array
 // and converted into a string version of the board
 
-const generateEmptyBoard = () => {
+const generateBoardArray = () => {
   let emptyBoard = [];
   
   // generate first row of letters
@@ -23,4 +23,4 @@ const generateEmptyBoard = () => {
 };
 
 
-module.exports = generateEmptyBoard;
+module.exports = generateBoardArray;
